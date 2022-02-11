@@ -1,1 +1,1 @@
-# javascript-practice-calculater
+# javascript-practice-calculator
