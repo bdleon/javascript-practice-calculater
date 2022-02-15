@@ -17,11 +17,14 @@ class Calculator {
     }
     
     appendNumber(number) {
-        this.currentOperand = number
+        if( number === '.' && this.currentOperand.includes('.')) return
+        this.currentOperand = this.currentOperand.toString() + number.toString()
     }
 
     chooseOperation(operation) {
-
+        this.operation = operation
+        this. previousOperand = this.currentOperand
+        this.currentOperand = ''
     }
 
     compute() {
@@ -30,6 +33,7 @@ class Calculator {
 
     updateDisplay(){
         this.currentOperandTextElement.innerText = this.currentOperand
+        this.previousOperandTextElement.innerText = this.previousOperand
     }
 }
 
@@ -38,18 +42,24 @@ class Calculator {
 
 const numberButtons = document.querySelectorAll('[data-number]')
 const operationButtons = document.querySelectorAll('[data-operation]')
-const equalsButton = document.querySelectorAll('[data-equals]')
-const deleteButton = document.querySelectorAll('[data-delete]')
-const deleteButton = document.querySelectorAll('[data-all-clear]')
-const dataClearButton = document.querySelectorAll('[data-all-clear]')
-const previousOperandTextElement = document.querySelectorAll('[data-previous-operand]')
-const currentOperandTextElement = document.querySelectorAll('[data-current-operand]')
+const equalsButton = document.querySelector('[data-equals]')
+const deleteButton = document.querySelector('[data-delete]')
+const dataClearButton = document.querySelector('[data-all-clear]')
+const previousOperandTextElement = document.querySelector('[data-previous-operand]')
+const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
 const calculator = new Calculator(previousOperandTextElement,currentOperandTextElement)
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () =>{
         calculator.appendNumber(button.innerText)
+        calculator.updateDisplay()
+    })
+})
+
+operationButtons.forEach(button => {
+    button.addEventListener('click', () =>{
+        calculator.chooseOperation(button.innerText)
         calculator.updateDisplay()
     })
 })
